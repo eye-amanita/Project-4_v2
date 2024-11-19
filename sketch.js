@@ -9,6 +9,9 @@ let sound;
 let amp;
 let fft;
 let fft16;
+let bounceOrientation;
+let bounceBoundLower;
+let bounceBoundUpper;
 
 let time1 = 40000;
 
@@ -31,6 +34,7 @@ function setup() {
 
   x = random(width*.125, width-(width*.125));
   y = random(height*.125, height-(width*.125));
+  bounceOrientation = random(['left', 'right']);
   
 }
 
@@ -51,15 +55,16 @@ function draw() {
   let freq14 = map(spectrum16[14],0,255,0,width*.1);
   let freq15 = map(spectrum16[15],0,255,0,width*.1);
 
+  if (bounceOrientation == 'left'){
+
+  }
   // ellipse(x, y, r*2, r*2);
   x += xspeed;
   y += yspeed;
-  if (x > width - r || x < r) {
+  if (x > bounceBoundUpper - r || x < bounceBoundLower + r ) {
     xspeed = -xspeed;
   }
-  if (y > height - r || y < r) {
-    yspeed = -yspeed;
-  }
+  
  
 
   for (let i = 0; i < level; i = i+1) {
@@ -78,11 +83,11 @@ function draw() {
   }
   if (y > width/2){
   for (let i = 0; i < highFreq; i = i+1) {
-    square(width*.0625+i*(width*.125),width*.0625,width*.0625);
+    square(width*.0625+i*(width*.125),height*.0625,width*.0625);
   }
 }  else{
   for (let i = 0; i < highFreq; i = i+1) {
-    square(width*.0625+i*(width*.125),height-(width*.125),width*.0625);
+    square(width*.0625+i*(width*.125),height-(height*.125),width*.0625);
   }
 }
 // if (y < width/2){
