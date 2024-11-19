@@ -46,10 +46,10 @@ function draw() {
 
   let highFreq = map(spectrum[20],0,255,0,7);
 
-  let freq12 = map(spectrum16[12],0,255,0,-width*.1);
-  let freq13 = map(spectrum16[13],0,255,0,-width*.1);
-  let freq14 = map(spectrum16[14],0,255,0,-width*.1);
-  let freq15 = map(spectrum16[15],0,255,0,-width*.1);
+  let freq12 = map(spectrum16[12],0,255,0,width*.1);
+  let freq13 = map(spectrum16[13],0,255,0,width*.1);
+  let freq14 = map(spectrum16[14],0,255,0,width*.1);
+  let freq15 = map(spectrum16[15],0,255,0,width*.1);
 
   // ellipse(x, y, r*2, r*2);
   x += xspeed;
@@ -82,7 +82,7 @@ function draw() {
   }
 }  else{
   for (let i = 0; i < highFreq; i = i+1) {
-    square(width*.0625+i*(width*.125),height-(width*.0625),width*.0625);
+    square(width*.0625+i*(width*.125),height-(width*.125),width*.0625);
   }
 }
 // if (y < width/2){
@@ -92,32 +92,32 @@ function draw() {
 // }
 
   push();
-  translate(width/3,height/3);
-  rotate(PI/2);
+  translate(width/8,height/6);
   noFill();
 
   stroke(255);
-  strokeWeight(width*.004);
+  strokeWeight(width*.0015);
   
   
   strokeCap(SQUARE);
     beginShape();
   
     vertex(0,0)
-    vertex(100,freq12);
-    vertex(200,freq13);
-    vertex(300,freq14);
-    vertex(400,freq15);
-    vertex(500,0);
+    vertex(freq12,100);
+    vertex(freq13,200);
+    vertex(freq14,300);
+    vertex(freq15,400);
+    vertex(0,500);
     endShape();
 
   pop();
  
 }
 
-function mousePressed() {
-
+function keyPressed() {
+if (key == ' '){
   sound.play();
+}
 }
 
 function windowResized() {
