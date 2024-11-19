@@ -80,7 +80,11 @@ function draw() {
   for (let i = 0; i < highFreq; i = i+1) {
     square(width*.0625+i*(width*.125),width*.0625,width*.0625);
   }
-}  
+}  else{
+  for (let i = 0; i < highFreq; i = i+1) {
+    square(width*.0625+i*(width*.125),height-(width*.0625),width*.0625);
+  }
+}
 // if (y < width/2){
 //   for (let i = 0; i < highFreq; i = i+1) {
 //     square(width*.0625+i*(width*.125),width-width*.0625,width*.0625);
