@@ -46,10 +46,10 @@ function draw() {
 
   let highFreq = map(spectrum[20],0,255,0,7);
 
-  let freq12 = map(spectrum16[12],0,255,0,-height*.25);
-  let freq13 = map(spectrum16[13],0,255,0,-height*.25);
-  let freq14 = map(spectrum16[14],0,255,0,-height*.25);
-  let freq15 = map(spectrum16[15],0,255,0,-height*.25);
+  let freq12 = map(spectrum16[12],0,255,0,-width*.1);
+  let freq13 = map(spectrum16[13],0,255,0,-width*.1);
+  let freq14 = map(spectrum16[14],0,255,0,-width*.1);
+  let freq15 = map(spectrum16[15],0,255,0,-width*.1);
 
   // ellipse(x, y, r*2, r*2);
   x += xspeed;
@@ -76,17 +76,26 @@ function draw() {
           strokeWeight(0);
           square(x+pointScatterX,y+pointScatterY,width*scale);
   }
-  
+  if (y > width/2){
   for (let i = 0; i < highFreq; i = i+1) {
     square(width*.0625+i*(width*.125),width*.0625,width*.0625);
   }
+}  
+// if (y < width/2){
+//   for (let i = 0; i < highFreq; i = i+1) {
+//     square(width*.0625+i*(width*.125),width-width*.0625,width*.0625);
+//   }
+// }
 
   push();
   translate(width/3,height/3);
   rotate(PI/2);
-  strokeWeight(width*.004);
-  stroke(255);
   noFill();
+
+  stroke(255);
+  strokeWeight(width*.004);
+  
+  
   strokeCap(SQUARE);
     beginShape();
   
@@ -105,4 +114,8 @@ function draw() {
 function mousePressed() {
 
   sound.play();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
