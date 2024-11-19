@@ -90,9 +90,10 @@ function draw() {
 //     square(width*.0625+i*(width*.125),width-width*.0625,width*.0625);
 //   }
 // }
-
+if (y > height-(height*(1/3)) ){
   push();
-  translate(width/8,height/6);
+  translate(width-width/12,height/16);
+  scale(-1,1,1);
   noFill();
 
   stroke(255);
@@ -103,15 +104,36 @@ function draw() {
     beginShape();
   
     vertex(0,0)
-    vertex(freq12,100);
-    vertex(freq13,200);
-    vertex(freq14,300);
-    vertex(freq15,400);
-    vertex(0,500);
+    vertex(freq12,height*.11);
+    vertex(freq13,(height*.11)*2);
+    vertex(freq14,(height*.11)*3);
+    vertex(freq15,(height*.11)*4);
+    vertex(0,(height*.11)*5);
     endShape();
 
   pop();
- 
+} else {
+  push();
+  translate(width/8,height/5);
+  noFill();
+
+  stroke(255);
+  strokeWeight(width*.0015);
+  
+  
+  strokeCap(SQUARE);
+    beginShape();
+  
+    vertex(0,0)
+    vertex(freq12,height*.12);
+    vertex(freq13,(height*.12)*2);
+    vertex(freq14,(height*.12)*3);
+    vertex(freq15,(height*.12)*4);
+    vertex(0,(height*.12)*5);
+    endShape();
+
+  pop();
+}
 }
 
 function keyPressed() {
