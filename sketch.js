@@ -15,6 +15,9 @@ let bounceBoundUpper;
 
 let time1 = 40000;
 
+let counter = 0;
+
+
 function preload() {
   sound = loadSound("Proj4_3 (Urgent Drone).mp3");
 }
@@ -32,9 +35,20 @@ function setup() {
 
   r = width*.16;
 
-  x = random(width*.125, width-(width*.125));
-  y = random(height*.125, height-(width*.125));
   bounceOrientation = random(['left', 'right']);
+  
+  if (bounceOrientation == 'left'){
+    x = width/3;
+    y = random(height*.2, height-(width*.2));
+  }
+
+  if (bounceOrientation == 'right'){
+    x = random(width/3.5+2*r, width-(width*.125)-2*r);
+    y = random(height*.2, height-(width*.2));
+  }
+  
+  
+  print(bounceOrientation,x,y);
   
 }
 
@@ -55,18 +69,28 @@ function draw() {
   let freq14 = map(spectrum16[14],0,255,0,width*.1);
   let freq15 = map(spectrum16[15],0,255,0,width*.1);
 
-  if (bounceOrientation == 'left'){
+  let refreshSpeed = int(map(spectrum16[7],0,255,20,1));
+ 
 
+  if (bounceOrientation == 'left'){
+    bounceBoundLower = 1+r;
+    bounceBoundUpper = width-(width/3.5)-r;
   }
+  if (bounceOrientation == 'right'){
+    bounceBoundLower = width/3.5+r;
+    bounceBoundUpper = width-1.5*r;
+  }
+  // fill(255,0,0);
   // ellipse(x, y, r*2, r*2);
+  fill(255);
   x += xspeed;
   y += yspeed;
-  if (x > bounceBoundUpper - r || x < bounceBoundLower + r ) {
+  if (x > bounceBoundUpper || x < bounceBoundLower ) {
     xspeed = -xspeed;
   }
   
  
-
+  //AMPLITUDE SCATTER
   for (let i = 0; i < level; i = i+1) {
         let xBound1 = random(.001,.2);
         let xBound2 = random(.001,.2);
@@ -81,21 +105,21 @@ function draw() {
           strokeWeight(0);
           square(x+pointScatterX,y+pointScatterY,width*scale);
   }
-  if (y > width/2){
+
+  //SEQUENCER PULSE
+
+  if (y > width/2 ){
   for (let i = 0; i < highFreq; i = i+1) {
     square(width*.0625+i*(width*.125),height*.0625,width*.0625);
   }
-}  else{
+}  else {
   for (let i = 0; i < highFreq; i = i+1) {
     square(width*.0625+i*(width*.125),height-(height*.125),width*.0625);
   }
 }
-// if (y < width/2){
-//   for (let i = 0; i < highFreq; i = i+1) {
-//     square(width*.0625+i*(width*.125),width-width*.0625,width*.0625);
-//   }
-// }
-if (y > height-(height*(1/3)) ){
+
+//UPPER FREQ LINE
+if (y > height-(height*(1/3)) || bounceOrientation == 'left'){
   push();
   translate(width-width/12,height/16);
   scale(-1,1,1);
@@ -139,6 +163,9 @@ if (y > height-(height*(1/3)) ){
 
   pop();
 }
+
+drawSequencer(refreshSpeed);
+
 }
 
 function keyPressed() {
@@ -149,4 +176,50 @@ if (key == ' '){
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+}
+
+function drawSequencer(refreshSpeed){
+  
+
+  for(let i = 0; i < 2; i++ ){
+    for(let j = 0; j < 3; j++ ){
+    square(0+(width/16)*j,0+(width/16)*i, width/20);
+    }
+  }
+
+  if (frameCount % refreshSpeed == 0) {
+    counter++;
+  }
+
+  if (counter > 5){
+    counter = 0;
+  }
+
+  if (counter == 0){
+    fill(0);
+    square(0,0, width/20);
+  } 
+  else if (counter == 1){
+    fill(0);
+    square(width/16,0, width/20);
+  }
+  else if (counter == 2){
+    fill(0);
+    square((width/16)*2,0, width/20);
+  }
+  else if (counter == 3){
+    fill(0);
+    square(0,width/16, width/20);
+  }
+  else if (counter == 4){
+    fill(0);
+    square(width/16, width/16, width/20);
+  }
+  else if (counter == 5){
+    fill(0);
+  
+
+    square((width/16)*2, width/16, width/20);
+  }
+  print(refreshSpeed);
 }
