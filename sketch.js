@@ -70,6 +70,7 @@ function draw() {
   let freq15 = map(spectrum16[15],0,255,0,width*.1);
 
   let refreshSpeed = int(map(spectrum16[7],0,255,20,1));
+  let refreshSpeed2 = int(map(spectrum16[4],0,255,20,1));
  
 
   if (bounceOrientation == 'left'){
@@ -108,7 +109,7 @@ function draw() {
 
   //SEQUENCER PULSE
 
-  if (y > width/2 ){
+  if (y > height/2 ){
   for (let i = 0; i < highFreq; i = i+1) {
     square(width*.0625+i*(width*.125),height*.0625,width*.0625);
   }
@@ -163,8 +164,13 @@ if (y > height-(height*(1/3)) || bounceOrientation == 'left'){
 
   pop();
 }
+if (y > height/2){
+  drawSequencer(refreshSpeed, bounceBoundLower, y - (y/2));
+}
+if (y < height/2){
+  drawSequencer(refreshSpeed, bounceBoundLower, y + ((height-y)/2));
+}
 
-drawSequencer(refreshSpeed);
 
 }
 
@@ -178,9 +184,10 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-function drawSequencer(refreshSpeed){
+function drawSequencer(refreshSpeed,sequencerX,sequencerY){
   
-
+push();
+translate(sequencerX,sequencerY)
   for(let i = 0; i < 2; i++ ){
     for(let j = 0; j < 3; j++ ){
     square(0+(width/16)*j,0+(width/16)*i, width/20);
@@ -222,4 +229,5 @@ function drawSequencer(refreshSpeed){
     square((width/16)*2, width/16, width/20);
   }
   print(refreshSpeed);
+  pop();
 }
