@@ -12,6 +12,7 @@ let fft16;
 let bounceOrientation;
 let bounceBoundLower;
 let bounceBoundUpper;
+let sequencer1Orientation;
 
 let time1 = 40000;
 
@@ -36,15 +37,16 @@ function setup() {
   r = width*.16;
 
   bounceOrientation = random(['left', 'right']);
+  sequencer1Orientation = random(['left', 'right']);
   
   if (bounceOrientation == 'left'){
     x = width/3;
-    y = random(height*.2, height-(width*.2));
+    y = random(height*.2, height-(height*.2));
   }
 
   if (bounceOrientation == 'right'){
     x = random(width/3.5+2*r, width-(width*.125)-2*r);
-    y = random(height*.2, height-(width*.2));
+    y = random(height*.2, height-(height*.125));
   }
   
   
@@ -53,6 +55,8 @@ function setup() {
 }
 
 function draw() {
+  
+  
   background(0);
   let now = millis();
 
@@ -70,7 +74,7 @@ function draw() {
   let freq15 = map(spectrum16[15],0,255,0,width*.1);
 
   let refreshSpeed = int(map(spectrum16[7],0,255,20,1));
-  let refreshSpeed2 = int(map(spectrum16[4],0,255,20,1));
+  let refreshSpeed2 = int(map(spectrum[1],0,255,20,1));
  
 
   if (bounceOrientation == 'left'){
@@ -111,11 +115,11 @@ function draw() {
 
   if (y > height/2 ){
   for (let i = 0; i < highFreq; i = i+1) {
-    square(width*.0625+i*(width*.125),height*.0625,width*.0625);
+    square(width*.0625+i*(width*.125),height*.0625,width*.0625*(height/1400));
   }
 }  else {
   for (let i = 0; i < highFreq; i = i+1) {
-    square(width*.0625+i*(width*.125),height-(height*.125),width*.0625);
+    square(width*.0625+i*(width*.125),height-(height*.125),width*.0625*(height/1400));
   }
 }
 
@@ -164,11 +168,25 @@ if (y > height-(height*(1/3)) || bounceOrientation == 'left'){
 
   pop();
 }
-if (y > height/2){
-  drawSequencer(refreshSpeed, bounceBoundLower, y - (y/2));
+if (y > height/3){
+  if(sequencer1Orientation == 'left'){
+  drawSequencer(refreshSpeed, bounceBoundLower, y - (y/1.75));
+  drawSequencer(refreshSpeed, bounceBoundUpper-(width*.125), y - (y/1.75));
 }
-if (y < height/2){
-  drawSequencer(refreshSpeed, bounceBoundLower, y + ((height-y)/2));
+if(sequencer1Orientation == 'right'){
+  drawSequencer(refreshSpeed, bounceBoundUpper-(width*.125), y - (y/1.75));
+  drawSequencer(refreshSpeed, bounceBoundLower, y - (y/1.75));
+}
+}
+if (y < height/3){
+  if(sequencer1Orientation == 'left'){
+  drawSequencer(refreshSpeed, bounceBoundLower, y + ((height-y)/1.5));
+  // drawSequencer(refreshSpeed2, bounceBoundUpper-(width*.125), y + ((height-y)/1.5));
+  }
+  if(sequencer1Orientation == 'right'){
+    drawSequencer(refreshSpeed, bounceBoundUpper-(width*.125), y + ((height-y)/1.5));
+    // drawSequencer(refreshSpeed2, bounceBoundLower, y + ((height-y)/1.5));
+  }
 }
 
 
@@ -185,12 +203,15 @@ function windowResized() {
 }
 
 function drawSequencer(refreshSpeed,sequencerX,sequencerY){
-  
+
+
+  if (width < 1080){
 push();
-translate(sequencerX,sequencerY)
+scale(1,1,1);
+translate(sequencerX,sequencerY);
   for(let i = 0; i < 2; i++ ){
     for(let j = 0; j < 3; j++ ){
-    square(0+(width/16)*j,0+(width/16)*i, width/20);
+    square(0+(width/16)*j,0+(width/16)*i, (width/20));
     }
   }
 
@@ -231,3 +252,54 @@ translate(sequencerX,sequencerY)
   print(refreshSpeed);
   pop();
 }
+else {
+  push();
+translate(sequencerX,sequencerY);
+scale(.65,.65,.65);
+  for(let i = 0; i < 2; i++ ){
+    for(let j = 0; j < 3; j++ ){
+    square(0+(width/16)*j,0+(width/16)*i, (width/20));
+    }
+  }
+
+  if (frameCount % refreshSpeed == 0) {
+    counter++;
+  }
+
+  if (counter > 5){
+    counter = 0;
+  }
+
+  if (counter == 0){
+    fill(0);
+    square(0,0, width/20);
+  } 
+  else if (counter == 1){
+    fill(0);
+    square(width/16,0, width/20);
+  }
+  else if (counter == 2){
+    fill(0);
+    square((width/16)*2,0, width/20);
+  }
+  else if (counter == 3){
+    fill(0);
+    square(0,width/16, width/20);
+  }
+  else if (counter == 4){
+    fill(0);
+    square(width/16, width/16, width/20);
+  }
+  else if (counter == 5){
+    fill(0);
+  
+
+    square((width/16)*2, width/16, width/20);
+  }
+  print(refreshSpeed);
+  pop();
+}
+}
+
+
+
