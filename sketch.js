@@ -181,11 +181,11 @@ if(sequencer1Orientation == 'right'){
 if (y < height/3){
   if(sequencer1Orientation == 'left'){
   drawSequencer(refreshSpeed, bounceBoundLower, y + ((height-y)/1.5));
-  // drawSequencer(refreshSpeed2, bounceBoundUpper-(width*.125), y + ((height-y)/1.5));
+  drawSequencer(refreshSpeed, bounceBoundUpper-(width*.125), y + ((height-y)/1.5));
   }
   if(sequencer1Orientation == 'right'){
     drawSequencer(refreshSpeed, bounceBoundUpper-(width*.125), y + ((height-y)/1.5));
-    // drawSequencer(refreshSpeed2, bounceBoundLower, y + ((height-y)/1.5));
+    drawSequencer(refreshSpeed, bounceBoundLower, y + ((height-y)/1.5));
   }
 }
 
